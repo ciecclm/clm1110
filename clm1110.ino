@@ -115,8 +115,8 @@ void setup() {
     pinMode(7, OUTPUT);
     pinMode(2,INPUT_PULLUP);
     pinMode(3,INPUT_PULLUP);
-    attachInterrupt(2, turningRIGHT, HIGH);
-    attachInterrupt(3, turningLEFT, HIGH);
+    attachInterrupt(2, turningRIGHT, HIGH);//中断，2号高电平时去运行turningRIGHT（）函数
+    attachInterrupt(3, turningLEFT, HIGH); //中断，3号高电平时去运行turningleft（）函数
     //digitalWrite(7, LOW);
     delay(10);
    // Serial3.write("AT+CAN_FRAMEFORMAT=0,0,0,0\r\n");
@@ -210,6 +210,8 @@ void loop()
      {
          od.speedwheel(5000,6000);
          delay(2500);
+         od.speedwheel(5000,0);//刹车放铲
+         delay(1000)；
          od.speedwheel(5000,6000,0,1);
          delay(5);
          od.speedwheel(5000,6000,0,2);
@@ -217,7 +219,8 @@ void loop()
          od.speedwheel(5000,-6000,0,3);
          delay(5);
          od.speedwheel(5000,-6000,0,4);
-         delay(1000);//右转大概45度
+         delay(1000);//上坡后右转大概45度
+         
          s=1;
      }
      if(oldlen=measure()<600)
