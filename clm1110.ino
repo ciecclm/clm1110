@@ -117,10 +117,10 @@ void setup() {
     pinMode(3,INPUT_PULLUP);
     attachInterrupt(2, turningRIGHT, HIGH);//中断，2号高电平时去运行turningRIGHT（）函数
     attachInterrupt(3, turningLEFT, HIGH); //中断，3号高电平时去运行turningleft（）函数
-    //digitalWrite(7, LOW);
+    digitalWrite(7, LOW);
     delay(10);
-   // Serial3.write("AT+CAN_FRAMEFORMAT=0,0,0,0\r\n");
-   // delay(1000);
+    Serial3.write("AT+CAN_FRAMEFORMAT=0,0,0,0\r\n");
+    delay(1000);
     digitalWrite(7, HIGH);
     delay(5);
     od.reset();
