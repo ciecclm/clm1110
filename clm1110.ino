@@ -41,6 +41,7 @@ robomodule::robomodule(int port)
 }
 int robomodule::reset(int g=0,int n=0)
 { 
+  noInterrupts();
   group=g;
   number=n;
   char cnum=(char)(number&0xff);
@@ -58,6 +59,7 @@ int robomodule::reset(int g=0,int n=0)
       for(i=0;i<14;i++)
          Serial3.write(command[i]);
   delay(500);
+  interrupts();
   return 0;
 }
 int robomodule::setmode(int mode,int g=0,int n=0)
@@ -83,6 +85,7 @@ int robomodule::setmode(int mode,int g=0,int n=0)
 }
 int robomodule::speedwheel(int temp_pwm,int temp_velocity,int g=0,int n=0)
 {
+    noInterrupts();
     group=g;
     number=n;
     char cnum=(char)(number&0xff);
@@ -103,6 +106,8 @@ int robomodule::speedwheel(int temp_pwm,int temp_velocity,int g=0,int n=0)
     if(serialport==3)
         for(i=0;i<14;i++)
            Serial3.write(command[i]);
+   delay(5);
+   interrupts();
    return 0;
 }
 robomodule od(3);
@@ -128,6 +133,7 @@ void setup() {
 }
 void turningRIGHT()
 {
+   noInterrupts();
    down1=digitalRead(2);
    down2=digitalRead(3);
    if(down1==HIGH||down2==HIGH)
@@ -135,27 +141,23 @@ void turningRIGHT()
        od.speedwheel(5000,-6000);
        delay(1000); 
        od.speedwheel(5000,6000,0,1);
-       delay(5);
        od.speedwheel(5000,6000,0,2);
-       delay(5);
        od.speedwheel(5000,-6000,0,3);
-       delay(5);
        od.speedwheel(5000,-6000,0,4);
        delay(1000);
    }
    else
    {
        od.speedwheel(5000,6000,0,1);
-       delay(5);
        od.speedwheel(5000,6000,0,2);
-       delay(5);
        od.speedwheel(5000,-6000,0,3);
-       delay(5);
        od.speedwheel(5000,-6000,0,4);
    }
+   interrupts();
 }
 void turningLEFT()
 {
+   noInterrupts();
    down1=digitalRead(2);
    down2=digitalRead(3);
    if(down1==HIGH||down2==HIGH)
@@ -163,28 +165,23 @@ void turningLEFT()
        od.speedwheel(5000,-6000);
        delay(1000); 
        od.speedwheel(5000,6000,0,1);
-       delay(5);
        od.speedwheel(5000,6000,0,2);
-       delay(5);
        od.speedwheel(5000,-6000,0,3);
-       delay(5);
        od.speedwheel(5000,-6000,0,4);
-       delay(1000);
    }
    else
    {
        od.speedwheel(5000,-6000,0,1);
-       delay(5);
        od.speedwheel(5000,-6000,0,2);
-       delay(5);
        od.speedwheel(5000,6000,0,3);
-       delay(5);
        od.speedwheel(5000,6000,0,4);
    }
+   interrupts();
   
 }
 int measure()
 {
+    noInterrupts();
     Serial2.flush();     // clear receive buffer of serial port
     Serial2.write(0X55); // trig US-100 begin to measure the distance
     delay(100);          //delay 500ms to wait result
@@ -200,6 +197,7 @@ int measure()
             Serial.println("mm");                  //output the result to serial monitor
         }
     }
+    interrupts();
     return Len_mm;
 }
 void loop() 
@@ -207,20 +205,16 @@ void loop()
      
      // put your main code here, to run repeatedly:
      if(s==0)
-     {
+     {   
          od.speedwheel(5000,6000);
          delay(2500);
          od.speedwheel(5000,0);//刹车放铲
-         delay(1000)；
+         delay(1000);
          od.speedwheel(5000,6000,0,1);
-         delay(5);
          od.speedwheel(5000,6000,0,2);
-         delay(5);
          od.speedwheel(5000,-6000,0,3);
-         delay(5);
          od.speedwheel(5000,-6000,0,4);
          delay(1000);//上坡后右转大概45度
-         
          s=1;
      }
      if(oldlen=measure()<600)
@@ -230,13 +224,9 @@ void loop()
      else
      {
          od.speedwheel(5000,6000,0,1);
-         delay(5);
          od.speedwheel(5000,6000,0,2);
-         delay(5);
          od.speedwheel(5000,-6000,0,3);
-         delay(5);
          od.speedwheel(5000,-6000,0,4);
-         delay(5);
          //oldlenmeasure()
          count++;
          if(count<1000)
