@@ -127,7 +127,7 @@ void setup() {
     Serial3.write("AT+CAN_FRAMEFORMAT=0,0,0,0\r\n");
     delay(1000);
     digitalWrite(7, HIGH);
-    delay(5);
+    delay(500);
     od.reset();
     od.setmode(3);
     delay(100);
