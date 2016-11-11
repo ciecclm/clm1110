@@ -125,19 +125,19 @@ void setup() {
     od.setmode(3);
     delay(10);
 }
-void turnright()
+void turnright(int s=6000)
 {
-       od.speedwheel(5000,6000,0,1);
-       od.speedwheel(5000,6000,0,2);
-       od.speedwheel(5000,-6000,0,3);
-       od.speedwheel(5000,-6000,0,4);
+       od.speedwheel(5000,s,0,1);
+       od.speedwheel(5000,s,0,2);
+       od.speedwheel(5000,-s,0,3);
+       od.speedwheel(5000,-s,0,4);
 }
-void turnleft()
+void turnleft(int s=6000)
 {
-       od.speedwheel(5000,-6000,0,1);
-       od.speedwheel(5000,-6000,0,2);
-       od.speedwheel(5000,6000,0,3);
-       od.speedwheel(5000,6000,0,4);
+       od.speedwheel(5000,-s,0,1);
+       od.speedwheel(5000,-s,0,2);
+       od.speedwheel(5000,s,0,3);
+       od.speedwheel(5000,s,0,4);
 }
 void check_drop()
 {
@@ -202,7 +202,7 @@ void loop()
          od.speedwheel(5000,0);
      }
      check_drop();
-     if(measure()<700)
+     if(measure()<600)
      {
          od.speedwheel(5000,6000);
      }
@@ -210,16 +210,16 @@ void loop()
      {
          if(count>temprand)
          {
-             temprand=random(1000,3000);
+             temprand=random(5,30);
              count=0;
-             Serial.println("hello!\n");
+             //Serial.println("hello!\n");
          }
          else if(temprand%3==0)
                     od.speedwheel(5000,6000); 
-         else   if(temprand%3==1)
-                    turnright();
-         else   if(temprand%3==2)
-                    turnleft();
-         count++;
+         else if(temprand%3==1)
+                    turnright(3000);
+         else if(temprand%3==2)
+                    turnleft(3000);
+        count++;
       }
 }
