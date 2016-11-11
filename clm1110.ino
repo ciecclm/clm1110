@@ -149,7 +149,7 @@ void check_drop()
        od.speedwheel(5000,-6000);
        delay(1000); 
        turnright();
-       delay(3000);
+       delay(1000);
    }
    if((down1==HIGH)&&(down2==LOW))
    {   
@@ -187,10 +187,9 @@ int measure()
     }
     return Len_mm;
 }
-void loop() 
-{  
-     // put your main code here, to run repeatedly:
-     if(s==0)
+void start()
+{
+  if(s==0)
      {   
          od.speedwheel(5000,6000);
          delay(2500);
@@ -201,6 +200,12 @@ void loop()
          s=1;
          od.speedwheel(5000,0);
      }
+  
+}
+void loop() 
+{  
+     // put your main code here, to run repeatedly:
+     start();
      check_drop();
      if(measure()<600)
      {
